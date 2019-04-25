@@ -25,7 +25,8 @@
 
 	<script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 
     <!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -51,6 +52,7 @@
 				<input type="Text" name="camposelector" id="camposelector" class="form-control">
 			</div>
 			<input type="button" id="boton" value="Ejecutar Selector" class="btn btn-warning btn-sm">
+			<p id='result'></p>
 		</form>
 		<div class="row">
 			<div class="col-md-6">
@@ -67,7 +69,7 @@
 		
 	</div>
 
-	<div class="col-md-8">
+	<div class="col-md-8 main" id='prin'>
 		<p id="p1" class="rojo">
 			Este es un párrafo con id="p1" y class="rojo"
 		</p>
@@ -109,10 +111,89 @@
 		<i>Esto es una etiqueta &lt;i&gt; para texto en itálica.</i>
 	</div>
 </div>
+
+
+  
+  <div  class="alert alert-danger" role="alert"></div>
 </main>
 
 <script>
 	// Agregar las instrucciones JS para resolver el ejercicio aquí.
+
+	$('div.alert').hide();
+	$('#boton').click(function(){
+
+		if ($('#camposelector').val() == '')
+		{
+			alert('Debe ingresar un selector jQuery!');
+			return;
+		}
+
+		var textInput = $('#camposelector').val();
+		var elements = ['p','div','b','i'];
+		var comodin = ['$','.','#','(',')',"'","'"];
+		var total = comodin.length
+		// console.log(comodin);
+		// console.log(elements);
+		// console.log(total);
+		
+try {
+	$('div.alert').hide();
+	if (eval(textInput).length == 0)
+	{
+throw 'No existe elemento'
+	} 
+} catch (error) {
+	$('#camposelector').val('');
+	$('div.alert').text(error);
+	$('div.alert').show();
+	
+}
+			if (eval(textInput).length > 0)
+			{
+				console.log(eval(textInput).length );
+				$('div.seleccionados').append(eval(textInput).length + '<br>' );
+				$('div.historial').append(textInput + '<br>');
+				
+				eval(textInput).fadeOut(3000);
+				eval(textInput).fadeIn(2000);
+				
+			}
+
+		var countCom = 0;	
+		for (var i = 0; i < textInput.length; i++) 
+		{
+			//console.log(textInput.charAt(i));
+			
+			var existCom = evaluateSelector(comodin,textInput.charAt(i));
+			if(existCom ==true)
+			{
+				countCom += 1;
+			}
+
+			var existSel = evaluateSelector(elements,textInput.charAt(i));
+
+		}
+	
+
+		function evaluateSelector(array, value)
+		{
+			for (let index = 0; index < array.length; index++) {
+				const element = array[index];
+				
+				if (element == value)
+				{
+					return true;
+				}
+				return false;
+			}
+		}
+		
+
+
+
+
+	});
 </script>
 
 </body>
